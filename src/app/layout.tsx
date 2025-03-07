@@ -14,7 +14,9 @@ export default function RootLayout({
 }>) {
     return (
         <html lang="en">
-            <body className="text-bg-dark">{children}</body>
+            <body data-bs-theme="dark">
+                <div className="container">{children}</div>
+            </body>
         </html>
     );
 }
