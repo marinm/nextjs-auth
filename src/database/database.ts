@@ -1,6 +1,9 @@
 import Database from "better-sqlite3";
 
-export function run(statement: string, params: unknown = []): void {
+export function run(
+    statement: string,
+    params: unknown = []
+): Database.RunResult {
     console.log("run:params", params);
 
     console.time("db:connect");
@@ -16,6 +19,8 @@ export function run(statement: string, params: unknown = []): void {
     console.log(result);
 
     db.close();
+
+    return result;
 }
 
 export function get<T>(statement: string, params: unknown = []): undefined | T {

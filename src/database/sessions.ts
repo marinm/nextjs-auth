@@ -31,7 +31,6 @@ export function create(userId: string): void {
         "INSERT INTO sessions (id, session_key, user_id, created_at, updated_at) VALUES (?, ?, ?, ?, ?);",
         [uuidv4(), sessionKey, userId, timestamp, timestamp]
     );
-    console.log(`new session user_id:${userId} session_key:${sessionKey}`);
 }
 
 export function all(): Session[] {
@@ -39,10 +38,11 @@ export function all(): Session[] {
 }
 
 export function refresh(sessionId: string): void {
-    return db.run(
-        `UPDATE sessions SET session_key = ?, updated_at = ? WHERE id = ?`,
-        [newSessionKey(), now(), sessionId]
-    );
+    db.run(`UPDATE sessions SET session_key = ?, updated_at = ? WHERE id = ?`, [
+        newSessionKey(),
+        now(),
+        sessionId,
+    ]);
 }
 
 export function authenticate(sessionKey: string): undefined | users.User {
