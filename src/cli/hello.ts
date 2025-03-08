@@ -14,7 +14,7 @@ function main(): void {
             commands.randomHex(16);
             break;
         default:
-            console.log("Command does not exist");
+            console.error("Command does not exist");
     }
 }
 
