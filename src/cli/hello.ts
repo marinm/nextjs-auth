@@ -40,6 +40,9 @@ function main(): void {
         case "getUserByUsername":
             commands.getUserByUsername(args[0]);
             break;
+        case "signIn":
+            commands.signIn(args[0], args[1]);
+            break;
         default:
             console.error("Command does not exist");
     }

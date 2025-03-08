@@ -212,3 +212,31 @@ export function getUserByUsername(username: string): undefined | User {
     console.log(result);
     return result;
 }
+
+export function passwordsMatch(
+    proof: string,
+    salt: string,
+    hash: string
+): boolean {
+    const proofHash = crypto.scryptSync(proof, salt, 64).toString("hex");
+
+    return crypto.timingSafeEqual(
+        Buffer.from(proofHash, "hex"),
+        Buffer.from(hash, "hex")
+    );
+}
+
+export function signIn(username: string, password: string): boolean {
+    const user = getUserByUsername(username);
+
+    if (!user) {
+        throw new Error("That username does not exist");
+    }
+
+    const [salt, hash] = user.password.split("-");
+    const authenticated = passwordsMatch(password, salt, hash);
+
+    console.log("authenticated: " + (authenticated ? "yes" : "no"));
+
+    return authenticated;
+}
