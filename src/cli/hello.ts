@@ -1,24 +1,18 @@
 import dotenv from "dotenv";
-import Database from "better-sqlite3";
+import * as commands from "./commands";
 
 dotenv.config();
 
 function main(): void {
-    console.time("db:connect");
-    const db = new Database(process.env.DATABASE_URL);
-    db.pragma("journal_mode = WAL");
-    console.timeEnd("db:connect");
+    const [, , command] = process.argv;
 
-    const [, , statement] = process.argv;
-
-    console.time("db:run");
-    const prepared = db.prepare(statement);
-    const result = prepared.reader ? prepared.all() : prepared.run();
-    console.timeEnd("db:run");
-
-    console.log(result);
-
-    db.close();
+    switch (command) {
+        case "tables":
+            commands.tables();
+            break;
+        default:
+            console.log("Command does not exist");
+    }
 }
 
 main();
