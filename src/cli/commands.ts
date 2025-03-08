@@ -47,7 +47,7 @@ function all<T>(statement: string): T[] {
     const result = prepared.all() as T[];
     console.timeEnd("db:run");
 
-    console.log(result);
+    console.table(result);
 
     db.close();
 
@@ -55,7 +55,7 @@ function all<T>(statement: string): T[] {
 }
 
 export function tables(): void {
-    all("SELECT * FROM sqlite_master");
+    all("SELECT name FROM sqlite_master");
 }
 
 export function drop(table: string): void {
@@ -131,7 +131,7 @@ export type User = {
 };
 
 export function users(): User[] {
-    return all<User>(`SELECT * FROM users`);
+    return all<User>(`SELECT id,username,created_at,updated_at FROM users`);
 }
 
 export function createUser(username: string, password: string): void {
