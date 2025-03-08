@@ -8,7 +8,7 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "hello": "tsx ./src/hello.ts"
+    "hello": "tsx ./src/cli/hello.ts"
   },
   "dependencies": {
     "@types/better-sqlite3": "^7.6.12",
