@@ -175,6 +175,10 @@ export function getUserByUsername(username: string): undefined | User {
     return get<User>(`SELECT * FROM users WHERE username = ?;`, username);
 }
 
+export function getUserById(id: string): undefined | User {
+    return get<User>(`SELECT * FROM users WHERE id = ?;`, id);
+}
+
 export function passwordsMatch(
     proof: string,
     salt: string,
