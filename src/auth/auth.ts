@@ -23,3 +23,7 @@ export async function login(
 
     return sessions.create(user.id) ?? null;
 }
+
+export async function logout(sessionId: string) {
+    sessions.del(sessionId);
+}

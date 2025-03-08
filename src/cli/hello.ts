@@ -43,8 +43,11 @@ function main(): void {
         case "getUserByUsername":
             users.byUsername(args[0]);
             break;
-        case "signIn":
-            auth.signIn(args[0], args[1]);
+        case "login":
+            auth.login(args[0], args[1]);
+            break;
+        case "logout":
+            auth.logout(args[0]);
             break;
         case "createSessionsTable":
             sessions.createTable();
@@ -63,9 +66,6 @@ function main(): void {
             break;
         case "deleteSession":
             sessions.del(args[0]);
-            break;
-        case "signOut":
-            auth.signOut(args[0]);
             break;
         default:
             console.error("Command does not exist");
