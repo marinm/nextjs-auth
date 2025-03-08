@@ -1,6 +1,6 @@
 import * as db from "@/data/database";
 import * as users from "@/data/users";
-import { newSessionKey, now, uuidv4 } from "@/utils";
+import { randomHex, now, uuidv4 } from "@/utils";
 
 export type Session = {
     id: string;
@@ -9,6 +9,10 @@ export type Session = {
     created_at: string;
     updated_at: string;
 };
+
+export function newSessionKey(): string {
+    return randomHex(128);
+}
 
 export function createTable(): void {
     db.run(

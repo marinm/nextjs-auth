@@ -54,7 +54,3 @@ export function now(): string {
     console.log("now: " + result);
     return result;
 }
-
-export function newSessionKey(): string {
-    return randomHex(128);
-}
