@@ -1,4 +1,5 @@
 import Database from "better-sqlite3";
+import { User, Session } from "@/database/types";
 import {
     hashedPassword,
     passwordsMatch,
@@ -92,14 +93,6 @@ export function usernameExists(username: string): boolean {
     );
 }
 
-export type User = {
-    id: string;
-    username: string;
-    password: string;
-    created_at: string;
-    updated_at: string;
-};
-
 export function users(): User[] {
     return all<User>(`SELECT id,username,created_at,updated_at FROM users`);
 }
@@ -189,14 +182,6 @@ export function createSession(userId: string): void {
     );
     console.log(`new session user_id:${userId} session_key:${sessionKey}`);
 }
-
-export type Session = {
-    id: string;
-    session_key: string;
-    user_id: string;
-    created_at: string;
-    updated_at: string;
-};
 
 export function sessions(): Session[] {
     return all<Session>(`SELECT * FROM sessions`);
