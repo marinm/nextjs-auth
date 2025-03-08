@@ -19,14 +19,17 @@ function main(): void {
         case "hashedPassword":
             commands.hashedPassword(args[0]);
             break;
-        case "createUsersTable":
-            commands.createUsersTable();
-            break;
         case "uuid:v4":
             commands.uuidv4();
             break;
         case "now":
             commands.now();
+            break;
+        case "createUsersTable":
+            commands.createUsersTable();
+            break;
+        case "usernameExists":
+            commands.usernameExists(args[0]);
             break;
         default:
             console.error("Command does not exist");

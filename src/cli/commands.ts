@@ -94,3 +94,29 @@ export function createUsersTable(): void {
 
     db.close();
 }
+
+export function usernameExists(username: string): boolean {
+    console.time("db:connect");
+    const db = new Database(process.env.DATABASE_URL);
+    db.pragma("journal_mode = WAL");
+    console.timeEnd("db:connect");
+
+    const statement = `
+            SELECT 1
+            FROM users
+            WHERE username = ?
+        `;
+
+    console.time("db:prepare");
+    const prepared = db.prepare(statement);
+    console.timeEnd("db:prepare");
+
+    console.time("db:run");
+    const exists = prepared.get(username) !== undefined;
+    console.timeEnd("db:run");
+
+    db.close();
+
+    console.log("exists: " + (exists ? "yes" : "no"));
+    return exists;
+}
