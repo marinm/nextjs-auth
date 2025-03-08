@@ -2,6 +2,7 @@ import dotenv from "dotenv";
 import * as commands from "./commands";
 import * as database from "@/database/database";
 import * as users from "@/database/users";
+import * as sessions from "@/database/sessions";
 
 dotenv.config();
 
@@ -46,22 +47,22 @@ function main(): void {
             commands.signIn(args[0], args[1]);
             break;
         case "createSessionsTable":
-            commands.createSessionsTable();
+            sessions.createTable();
             break;
         case "createSession":
-            commands.createSession(args[0]);
+            sessions.create(args[0]);
             break;
         case "sessions":
-            commands.sessions();
+            sessions.all();
             break;
         case "authenticateSession":
-            commands.authenticateSession(args[0]);
+            sessions.authenticate(args[0]);
             break;
         case "refreshSession":
-            commands.refreshSession(args[0]);
+            sessions.refresh(args[0]);
             break;
         case "deleteSession":
-            commands.deleteSession(args[0]);
+            sessions.del(args[0]);
             break;
         case "signOut":
             commands.signOut(args[0]);
