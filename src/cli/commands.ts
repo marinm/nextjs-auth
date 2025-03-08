@@ -112,7 +112,7 @@ export function now(): string {
 export function createUsersTable(): void {
     run(
         `CREATE TABLE IF NOT EXISTS users (
-            id TEXT NOT NULL,
+            id TEXT NOT NULL PRIMARY KEY,
             username TEXT NOT NULL,
             password TEXT NOT NULL,
             created_at TEXT NOT NULL,
