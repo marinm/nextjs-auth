@@ -2,15 +2,15 @@ import Database from "better-sqlite3";
 import crypto from "node:crypto";
 import * as uuid from "uuid";
 
-export function tables(): void {
+function run(statement: string, params: unknown): void {
     console.time("db:connect");
     const db = new Database(process.env.DATABASE_URL);
     db.pragma("journal_mode = WAL");
     console.timeEnd("db:connect");
 
     console.time("db:run");
-    const prepared = db.prepare("SELECT * FROM sqlite_master");
-    const result = prepared.reader ? prepared.all() : prepared.run();
+    const prepared = db.prepare(statement);
+    const result = prepared.run(params);
     console.timeEnd("db:run");
 
     console.log(result);
@@ -18,13 +18,48 @@ export function tables(): void {
     db.close();
 }
 
-export function drop(table: string): void {
+function get<T>(statement: string, params: unknown): undefined | T {
+    console.time("db:connect");
     const db = new Database(process.env.DATABASE_URL);
     db.pragma("journal_mode = WAL");
+    console.timeEnd("db:connect");
 
-    db.prepare(`DROP TABLE IF EXISTS ${table}`).run();
+    console.time("db:run");
+    const prepared = db.prepare(statement);
+    const result = prepared.get(params) as T;
+    console.timeEnd("db:run");
+
+    console.log(result);
 
     db.close();
+
+    return result;
+}
+
+function all<T>(statement: string): T[] {
+    console.time("db:connect");
+    const db = new Database(process.env.DATABASE_URL);
+    db.pragma("journal_mode = WAL");
+    console.timeEnd("db:connect");
+
+    console.time("db:run");
+    const prepared = db.prepare(statement);
+    const result = prepared.all() as T[];
+    console.timeEnd("db:run");
+
+    console.log(result);
+
+    db.close();
+
+    return result;
+}
+
+export function tables(): void {
+    all("SELECT * FROM sqlite_master");
+}
+
+export function drop(table: string): void {
+    run(`DROP TABLE IF EXISTS ?`, [table]);
 }
 
 export function randomHex(n: number): string {
@@ -69,56 +104,22 @@ export function now(): string {
 }
 
 export function createUsersTable(): void {
-    console.time("db:connect");
-    const db = new Database(process.env.DATABASE_URL);
-    db.pragma("journal_mode = WAL");
-    console.timeEnd("db:connect");
-
-    const statement = `
-            CREATE TABLE IF NOT EXISTS users (
-                id TEXT NOT NULL,
-                username TEXT NOT NULL,
-                password TEXT NOT NULL,
-                created_at TEXT NOT NULL,
-                updated_at TEXT NOT NULL
-            );
-        `;
-
-    console.time("db:prepare");
-    const prepared = db.prepare(statement);
-    console.timeEnd("db:prepare");
-
-    console.time("db:run");
-    prepared.run();
-    console.timeEnd("db:run");
-
-    db.close();
+    run(
+        `CREATE TABLE IF NOT EXISTS users (
+            id TEXT NOT NULL,
+            username TEXT NOT NULL,
+            password TEXT NOT NULL,
+            created_at TEXT NOT NULL,
+            updated_at TEXT NOT NULL
+        );`,
+        []
+    );
 }
 
 export function usernameExists(username: string): boolean {
-    console.time("db:connect");
-    const db = new Database(process.env.DATABASE_URL);
-    db.pragma("journal_mode = WAL");
-    console.timeEnd("db:connect");
-
-    const statement = `
-            SELECT 1
-            FROM users
-            WHERE username = ?
-        `;
-
-    console.time("db:prepare");
-    const prepared = db.prepare(statement);
-    console.timeEnd("db:prepare");
-
-    console.time("db:run");
-    const exists = prepared.get(username) !== undefined;
-    console.timeEnd("db:run");
-
-    db.close();
-
-    console.log("exists: " + (exists ? "yes" : "no"));
-    return exists;
+    return (
+        get(`SELECT 1 FROM users WHERE username = ?`, username) !== undefined
+    );
 }
 
 export type User = {
@@ -130,28 +131,10 @@ export type User = {
 };
 
 export function users(): User[] {
-    console.time("db:connect");
-    const db = new Database(process.env.DATABASE_URL);
-    db.pragma("journal_mode = WAL");
-    console.timeEnd("db:connect");
-
-    const statement = `SELECT * FROM users`;
-
-    console.time("db:prepare");
-    const prepared = db.prepare(statement);
-    console.timeEnd("db:prepare");
-
-    console.time("db:run");
-    const users = prepared.all() as User[];
-    console.timeEnd("db:run");
-
-    db.close();
-
-    console.log(users);
-    return users;
+    return all<User>(`SELECT * FROM users`);
 }
 
-export function createUser(username: string, password: string): string {
+export function createUser(username: string, password: string): void {
     if (username.length < 2) {
         throw new Error("Username must be at least 2 characters long");
     }
@@ -172,45 +155,18 @@ export function createUser(username: string, password: string): string {
         throw new Error(`Username ${username} already exists`);
     }
 
-    console.time("db:connect");
-    const db = new Database(process.env.DATABASE_URL);
-    db.pragma("journal_mode = WAL");
-    console.timeEnd("db:connect");
-
-    const statement = `
-            INSERT INTO users VALUES (?, ?, ?, ?, ?);
-        `;
-
-    console.time("db:prepare");
-    const prepared = db.prepare(statement);
-    console.timeEnd("db:prepare");
-
-    console.time("db:run");
     const timestamp = now();
-    const result = prepared.run(
+    run(`INSERT INTO users VALUES (?, ?, ?, ?, ?);`, [
         uuidv4(),
         username,
         hashedPassword(password),
         timestamp,
-        timestamp
-    );
-    console.timeEnd("db:run");
-
-    console.log(result);
-
-    db.close();
-
-    return "done";
+        timestamp,
+    ]);
 }
 
 export function getUserByUsername(username: string): undefined | User {
-    const db = new Database(process.env.DATABASE_URL);
-    db.pragma("journal_mode = WAL");
-    const statement = `SELECT * FROM users WHERE username = ?;`;
-    const result = db.prepare(statement).get(username) as undefined | User;
-    db.close();
-    console.log(result);
-    return result;
+    return get<User>(`SELECT * FROM users WHERE username = ?;`, username);
 }
 
 export function passwordsMatch(
