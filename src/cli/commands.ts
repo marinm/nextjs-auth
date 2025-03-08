@@ -2,7 +2,7 @@ import Database from "better-sqlite3";
 import crypto from "node:crypto";
 import * as uuid from "uuid";
 
-function run(statement: string, params: unknown): void {
+function run(statement: string, params: unknown = []): void {
     console.time("db:connect");
     const db = new Database(process.env.DATABASE_URL);
     db.pragma("journal_mode = WAL");
@@ -18,7 +18,7 @@ function run(statement: string, params: unknown): void {
     db.close();
 }
 
-function get<T>(statement: string, params: unknown): undefined | T {
+function get<T>(statement: string, params: unknown = []): undefined | T {
     console.time("db:connect");
     const db = new Database(process.env.DATABASE_URL);
     db.pragma("journal_mode = WAL");
@@ -36,7 +36,7 @@ function get<T>(statement: string, params: unknown): undefined | T {
     return result;
 }
 
-function all<T>(statement: string): T[] {
+function all<T>(statement: string, params: unknown = []): T[] {
     console.time("db:connect");
     const db = new Database(process.env.DATABASE_URL);
     db.pragma("journal_mode = WAL");
@@ -44,7 +44,7 @@ function all<T>(statement: string): T[] {
 
     console.time("db:run");
     const prepared = db.prepare(statement);
-    const result = prepared.all() as T[];
+    const result = prepared.all(params) as T[];
     console.timeEnd("db:run");
 
     console.table(result);
@@ -63,7 +63,7 @@ export function tableInfo(table: string): void {
 }
 
 export function drop(table: string): void {
-    run(`DROP TABLE IF EXISTS ?`, [table]);
+    run(`DROP TABLE IF EXISTS ${table}`);
 }
 
 export function randomHex(n: number): string {
