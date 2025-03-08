@@ -70,6 +70,12 @@ function main(): void {
         case "refreshSession":
             commands.refreshSession(args[0]);
             break;
+        case "deleteSession":
+            commands.deleteSession(args[0]);
+            break;
+        case "signOut":
+            commands.signOut(args[0]);
+            break;
         default:
             console.error("Command does not exist");
     }

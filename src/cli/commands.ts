@@ -211,6 +211,10 @@ export function signIn(username: string, password: string): boolean {
     return authenticated;
 }
 
+export function signOut(sessionId: string): void {
+    deleteSession(sessionId);
+}
+
 export function createSessionsTable(): void {
     run(
         `CREATE TABLE IF NOT EXISTS sessions (
@@ -269,4 +273,8 @@ export function authenticateSession(sessionKey: string): undefined | User {
     }
 
     return session?.user_id ? getUserById(session.user_id) : undefined;
+}
+
+export function deleteSession(id: string): void {
+    run("DELETE FROM sessions WHERE id = ?;", [id]);
 }
