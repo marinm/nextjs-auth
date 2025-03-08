@@ -1,16 +1,15 @@
 import * as db from "@/data/database";
 import * as users from "@/data/users";
-import { randomHex, now, uuidv4 } from "@/utils";
+import { randomHex, now } from "@/utils";
 
 export type Session = {
     id: string;
-    session_key: string;
     user_id: string;
     created_at: string;
     updated_at: string;
 };
 
-export function newSessionKey(): string {
+export function newSessionId(): string {
     return randomHex(128);
 }
 
@@ -18,7 +17,6 @@ export function createTable(): void {
     db.run(
         `CREATE TABLE IF NOT EXISTS sessions (
             id TEXT NOT NULL PRIMARY KEY,
-            session_key TEXT NOT NULL,
             user_id TEXT,
             created_at TEXT NOT NULL,
             updated_at TEXT NOT NULL,
@@ -28,17 +26,16 @@ export function createTable(): void {
     );
 }
 
-export function get(sessionId: string): undefined | Session {
-    return db.get("SELECT * FROM sessions WHERE id = ?;", [sessionId]);
+export function get(id: string): undefined | Session {
+    return db.get("SELECT * FROM sessions WHERE id = ?;", [id]);
 }
 
 export function create(userId: string): undefined | Session {
-    const sessionKey = newSessionKey();
+    const id = newSessionId();
     const timestamp = now();
-    const id = uuidv4();
     db.run(
-        "INSERT INTO sessions (id, session_key, user_id, created_at, updated_at) VALUES (?, ?, ?, ?, ?);",
-        [id, sessionKey, userId, timestamp, timestamp]
+        "INSERT INTO sessions (id, user_id, created_at, updated_at) VALUES (?, ?, ?, ?, ?);",
+        [id, userId, timestamp, timestamp]
     );
     return get(id);
 }
@@ -48,24 +45,25 @@ export function all(): Session[] {
 }
 
 export function refresh(sessionId: string): void {
-    db.run(`UPDATE sessions SET session_key = ?, updated_at = ? WHERE id = ?`, [
-        newSessionKey(),
+    db.run(`UPDATE sessions SET id = ?, updated_at = ? WHERE id = ?`, [
+        newSessionId(),
         now(),
         sessionId,
     ]);
 }
 
-export function authenticate(sessionKey: string): undefined | users.User {
-    const session: Session | undefined = db.get<Session>(
-        "SELECT * FROM sessions WHERE session_key = ?",
-        [sessionKey]
-    );
+export function authenticate(sessionId: string): undefined | users.User {
+    const session = get(sessionId);
 
-    if (session !== undefined) {
-        refresh(session.id);
+    if (session === undefined) {
+        return undefined;
     }
 
-    return session?.user_id ? users.byId(session.user_id) : undefined;
+    const user = users.byId(session.user_id);
+
+    // refresh(session.id);
+
+    return user;
 }
 
 export function del(id: string): void {
