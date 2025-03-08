@@ -221,8 +221,12 @@ export function createSessionsTable(): void {
     );
 }
 
+export function newSessionKey(): string {
+    return randomHex(128);
+}
+
 export function createSession(userId: string): void {
-    const sessionKey = randomHex(128);
+    const sessionKey = newSessionKey();
     const timestamp = now();
     run(
         "INSERT INTO sessions (id, session_key, user_id, created_at, updated_at) VALUES (?, ?, ?, ?, ?);",
