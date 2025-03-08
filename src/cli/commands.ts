@@ -2,7 +2,9 @@ import Database from "better-sqlite3";
 import crypto from "node:crypto";
 import * as uuid from "uuid";
 
-function run(statement: string, params: unknown = []): void {
+export function run(statement: string, params: unknown = []): void {
+    console.log("run:params", params);
+
     console.time("db:connect");
     const db = new Database(process.env.DATABASE_URL);
     db.pragma("journal_mode = WAL");
@@ -18,7 +20,7 @@ function run(statement: string, params: unknown = []): void {
     db.close();
 }
 
-function get<T>(statement: string, params: unknown = []): undefined | T {
+export function get<T>(statement: string, params: unknown = []): undefined | T {
     console.time("db:connect");
     const db = new Database(process.env.DATABASE_URL);
     db.pragma("journal_mode = WAL");
@@ -36,7 +38,7 @@ function get<T>(statement: string, params: unknown = []): undefined | T {
     return result;
 }
 
-function all<T>(statement: string, params: unknown = []): T[] {
+export function all<T>(statement: string, params: unknown = []): T[] {
     console.time("db:connect");
     const db = new Database(process.env.DATABASE_URL);
     db.pragma("journal_mode = WAL");

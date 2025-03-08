@@ -7,6 +7,12 @@ function main(): void {
     const [, , command, ...args] = process.argv;
 
     switch (command) {
+        case "run":
+            commands.run(args[0]);
+            break;
+        case "all":
+            commands.all(args[0]);
+            break;
         case "tables":
             commands.tables();
             break;
