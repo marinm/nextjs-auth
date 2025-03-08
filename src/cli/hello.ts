@@ -1,5 +1,6 @@
 import dotenv from "dotenv";
 import * as commands from "./commands";
+import * as database from "@/database/database";
 
 dotenv.config();
 
@@ -8,19 +9,19 @@ function main(): void {
 
     switch (command) {
         case "run":
-            commands.run(args[0]);
+            database.run(args[0]);
             break;
         case "all":
-            commands.all(args[0]);
+            database.all(args[0]);
             break;
         case "tables":
-            commands.tables();
+            database.tables();
             break;
         case "tableInfo":
-            commands.tableInfo(args[0]);
+            database.tableInfo(args[0]);
             break;
         case "drop":
-            commands.drop(args[0]);
+            database.drop(args[0]);
             break;
         case "createUsersTable":
             commands.createUsersTable();
