@@ -19,6 +19,9 @@ function main(): void {
         case "hashedPassword":
             commands.hashedPassword(args[0]);
             break;
+        case "uuid:v4":
+            commands.uuidv4();
+            break;
         default:
             console.error("Command does not exist");
     }

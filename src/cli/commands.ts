@@ -1,5 +1,6 @@
 import Database from "better-sqlite3";
 import crypto from "node:crypto";
+import * as uuid from "uuid";
 
 export function tables(): void {
     console.time("db:connect");
@@ -42,3 +43,12 @@ export function hashedPassword(password: string): string {
     console.log(password, salt, hash);
     return hash;
 }
+
+export function uuidv4(): string {
+    console.time("uuid:v4");
+    const result = uuid.v4();
+    console.timeEnd("uuid:v4");
+    console.log("uuid:v4: " + result);
+    return result;
+}
+
