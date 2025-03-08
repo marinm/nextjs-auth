@@ -1,4 +1,4 @@
-import * as db from "@/database/database";
+import * as db from "@/data/database";
 import { uuidv4, now, hashedPassword } from "@/utils";
 
 export type User = {

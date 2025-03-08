@@ -1,7 +1,7 @@
 "use server";
 
-import * as users from "@/database/users";
-import * as sessions from "@/database/sessions";
+import * as users from "@/data/users";
+import * as sessions from "@/data/sessions";
 import { passwordsMatch } from "@/utils";
 
 export async function login(

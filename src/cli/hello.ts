@@ -1,7 +1,7 @@
 import dotenv from "dotenv";
-import * as database from "@/database/database";
-import * as users from "@/database/users";
-import * as sessions from "@/database/sessions";
+import * as database from "@/data/database";
+import * as users from "@/data/users";
+import * as sessions from "@/data/sessions";
 import * as auth from "@/auth/auth";
 
 dotenv.config();

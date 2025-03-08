@@ -1,5 +1,5 @@
-import * as db from "@/database/database";
-import * as users from "@/database/users";
+import * as db from "@/data/database";
+import * as users from "@/data/users";
 import { newSessionKey, now, uuidv4 } from "@/utils";
 
 export type Session = {
