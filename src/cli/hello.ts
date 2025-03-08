@@ -58,8 +58,8 @@ function main(): void {
         case "sessions":
             sessions.all();
             break;
-        case "authenticateSession":
-            sessions.authenticate(args[0]);
+        case "sessions.sessionUser":
+            sessions.sessionUser(args[0]);
             break;
         case "refreshSession":
             sessions.refresh(args[0]);

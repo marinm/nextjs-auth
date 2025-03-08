@@ -52,18 +52,18 @@ export function refresh(sessionId: string): void {
     ]);
 }
 
-export function authenticate(sessionId: string): undefined | users.User {
+export function sessionUser(sessionId: string): null | users.User {
     const session = find(sessionId);
 
     if (session === undefined) {
-        return undefined;
+        return null;
     }
 
     const user = users.find(session.user_id);
 
     // refresh(session.id);
 
-    return user;
+    return user ?? null;
 }
 
 export function del(id: string): void {
