@@ -202,6 +202,10 @@ export function signIn(username: string, password: string): boolean {
     const [salt, hash] = user.password.split("-");
     const authenticated = passwordsMatch(password, salt, hash);
 
+    if (authenticated) {
+        createSession(user.id);
+    }
+
     console.log("authenticated: " + (authenticated ? "yes" : "no"));
 
     return authenticated;
