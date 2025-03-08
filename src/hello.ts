@@ -3,9 +3,19 @@ import Database from "better-sqlite3";
 
 dotenv.config();
 
-const db = new Database(process.env.DATABASE_URL);
-db.pragma("journal_mode = WAL");
+function main(): void {
+    const db = new Database(process.env.DATABASE_URL);
+    db.pragma("journal_mode = WAL");
 
-console.log(db);
+    const [, , statement] = process.argv;
 
-db.close();
+    const prepared = db.prepare(statement);
+
+    const result = prepared.reader ? prepared.all() : prepared.run();
+
+    console.log(result);
+
+    db.close();
+}
+
+main();
