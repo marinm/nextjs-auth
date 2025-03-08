@@ -24,13 +24,19 @@ export function createTable(): void {
     );
 }
 
-export function create(userId: string): void {
+export function get(sessionId: string): undefined | Session {
+    return db.get("SELECT * FROM sessions WHERE id = ?;", [sessionId]);
+}
+
+export function create(userId: string): undefined | Session {
     const sessionKey = newSessionKey();
     const timestamp = now();
+    const id = uuidv4();
     db.run(
         "INSERT INTO sessions (id, session_key, user_id, created_at, updated_at) VALUES (?, ?, ?, ?, ?);",
-        [uuidv4(), sessionKey, userId, timestamp, timestamp]
+        [id, sessionKey, userId, timestamp, timestamp]
     );
+    return get(id);
 }
 
 export function all(): Session[] {

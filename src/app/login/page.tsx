@@ -1,9 +1,7 @@
-import { login } from "@/app/actions";
-
 export default function Page() {
     return (
         <div className="min-vh-100 d-flex flex-column justify-content-center">
-            <form action={login} className="d-grid gap-3">
+            <form method="POST" action="/api/login" className="d-grid gap-3">
                 <div className="form-floating">
                     <input
                         type="text"

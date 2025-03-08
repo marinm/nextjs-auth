@@ -1,26 +1,25 @@
+"use server";
+
 import * as users from "@/database/users";
 import * as sessions from "@/database/sessions";
 import { passwordsMatch } from "@/utils";
 
-export function login(username: string, password: string): boolean {
+export async function login(
+    username: string,
+    password: string
+): Promise<null | sessions.Session> {
     const user = users.byUsername(username);
 
-    if (!user) {
-        throw new Error("That username does not exist");
+    if (user === undefined) {
+        return null;
     }
 
     const [salt, hash] = user.password.split("-");
     const authenticated = passwordsMatch(password, salt, hash);
 
-    if (authenticated) {
-        sessions.create(user.id);
+    if (!authenticated) {
+        return null;
     }
 
-    console.log("authenticated: " + (authenticated ? "yes" : "no"));
-
-    return authenticated;
-}
-
-export function logout(sessionId: string): void {
-    sessions.del(sessionId);
+    return sessions.create(user.id) ?? null;
 }
