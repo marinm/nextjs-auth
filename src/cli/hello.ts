@@ -10,6 +10,9 @@ function main(): void {
         case "tables":
             commands.tables();
             break;
+        case "drop":
+            commands.drop(args[0]);
+            break;
         case "randomHex":
             commands.randomHex(parseInt(args[0]));
             break;

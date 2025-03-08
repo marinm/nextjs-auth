@@ -17,6 +17,15 @@ export function tables(): void {
     db.close();
 }
 
+export function drop(table: string): void {
+    const db = new Database(process.env.DATABASE_URL);
+    db.pragma("journal_mode = WAL");
+
+    db.prepare(`DROP TABLE IF EXISTS ${table}`).run();
+
+    db.close();
+}
+
 export function randomHex(n: number): string {
     console.time("randomHex");
     const result: string = crypto.randomBytes(n).toString("hex");
