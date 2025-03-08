@@ -247,11 +247,22 @@ export function sessions(): Session[] {
     return all<Session>(`SELECT * FROM sessions`);
 }
 
-export function authenticateSession(sessionKey: string): boolean {
+export function refreshSession(sessionId: string): void {
+    return run(
+        `UPDATE sessions SET session_key = ?, updated_at = ? WHERE id = ?`,
+        [newSessionKey(), now(), sessionId]
+    );
+}
+
+export function authenticateSession(sessionKey: string): undefined | User {
     const session: Session | undefined = get<Session>(
         "SELECT * FROM sessions WHERE session_key = ?",
         [sessionKey]
     );
 
-    return session !== undefined;
+    if (session !== undefined) {
+        refreshSession(session.id);
+    }
+
+    return session?.user_id ? getUserById(session.user_id) : undefined;
 }
