@@ -22,18 +22,6 @@ function main(): void {
         case "drop":
             commands.drop(args[0]);
             break;
-        case "randomHex":
-            commands.randomHex(parseInt(args[0]));
-            break;
-        case "hashedPassword":
-            commands.hashedPassword(args[0]);
-            break;
-        case "uuid:v4":
-            commands.uuidv4();
-            break;
-        case "now":
-            commands.now();
-            break;
         case "createUsersTable":
             commands.createUsersTable();
             break;

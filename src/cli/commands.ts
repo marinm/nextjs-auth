@@ -1,6 +1,11 @@
 import Database from "better-sqlite3";
-import crypto from "node:crypto";
-import * as uuid from "uuid";
+import {
+    hashedPassword,
+    passwordsMatch,
+    now,
+    uuidv4,
+    newSessionKey,
+} from "@/utils";
 
 export function run(statement: string, params: unknown = []): void {
     console.log("run:params", params);
@@ -66,47 +71,6 @@ export function tableInfo(table: string): void {
 
 export function drop(table: string): void {
     run(`DROP TABLE IF EXISTS ${table}`);
-}
-
-export function randomHex(n: number): string {
-    console.time("randomHex");
-    const result: string = crypto.randomBytes(n).toString("hex");
-    console.timeEnd("randomHex");
-    console.log(result);
-    return result;
-}
-
-export function hashedPassword(password: string): string {
-    const salt = randomHex(16);
-    console.time("crypto.scryptSync");
-    const hash = crypto.scryptSync(password, salt, 64).toString("hex");
-    console.timeEnd("crypto.scryptSync");
-    console.log(password, salt, hash);
-    return `${salt}-${hash}`;
-}
-
-export function uuidv4(): string {
-    console.time("uuid:v4");
-    const result = uuid.v4();
-    console.timeEnd("uuid:v4");
-    console.log("uuid:v4: " + result);
-    return result;
-}
-
-export function now(): string {
-    const datetime = new Date();
-
-    const y = datetime.getUTCFullYear();
-    const m = String(datetime.getUTCMonth()).padStart(2, "0");
-    const d = String(datetime.getUTCDate()).padStart(2, "0");
-    const h = String(datetime.getUTCHours()).padStart(2, "0");
-    const i = String(datetime.getUTCMinutes()).padStart(2, "0");
-    const s = String(datetime.getUTCSeconds()).padStart(2, "0");
-
-    const result = `${y}-${m}-${d} ${h}:${i}:${s}`;
-
-    console.log("now: " + result);
-    return result;
 }
 
 export function createUsersTable(): void {
@@ -179,19 +143,6 @@ export function getUserById(id: string): undefined | User {
     return get<User>(`SELECT * FROM users WHERE id = ?;`, id);
 }
 
-export function passwordsMatch(
-    proof: string,
-    salt: string,
-    hash: string
-): boolean {
-    const proofHash = crypto.scryptSync(proof, salt, 64).toString("hex");
-
-    return crypto.timingSafeEqual(
-        Buffer.from(proofHash, "hex"),
-        Buffer.from(hash, "hex")
-    );
-}
-
 export function signIn(username: string, password: string): boolean {
     const user = getUserByUsername(username);
 
@@ -227,10 +178,6 @@ export function createSessionsTable(): void {
         );`,
         []
     );
-}
-
-export function newSessionKey(): string {
-    return randomHex(128);
 }
 
 export function createSession(userId: string): void {
