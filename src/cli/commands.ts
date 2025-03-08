@@ -196,3 +196,17 @@ export function signIn(username: string, password: string): boolean {
 
     return authenticated;
 }
+
+export function createSessionsTable(): void {
+    run(
+        `CREATE TABLE IF NOT EXISTS sessions (
+            id TEXT NOT NULL,
+            session_key TEXT NOT NULL,
+            user_id TEXT,
+            created_at TEXT NOT NULL,
+            updated_at TEXT NOT NULL,
+            FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
+        );`,
+        []
+    );
+}

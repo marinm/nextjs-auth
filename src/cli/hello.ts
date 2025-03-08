@@ -43,6 +43,9 @@ function main(): void {
         case "signIn":
             commands.signIn(args[0], args[1]);
             break;
+        case "createSessionsTable":
+            commands.createSessionsTable();
+            break;
         default:
             console.error("Command does not exist");
     }
