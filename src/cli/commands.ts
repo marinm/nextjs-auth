@@ -58,6 +58,10 @@ export function tables(): void {
     all("SELECT name FROM sqlite_master");
 }
 
+export function tableInfo(table: string): void {
+    all(`PRAGMA table_info(${table})`);
+}
+
 export function drop(table: string): void {
     run(`DROP TABLE IF EXISTS ?`, [table]);
 }
