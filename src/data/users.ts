@@ -67,6 +67,6 @@ export function byUsername(username: string): undefined | User {
     return db.get<User>(`SELECT * FROM users WHERE username = ?;`, username);
 }
 
-export function byId(id: string): undefined | User {
+export function find(id: string): undefined | User {
     return db.get<User>(`SELECT * FROM users WHERE id = ?;`, id);
 }

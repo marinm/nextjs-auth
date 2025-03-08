@@ -37,8 +37,8 @@ function main(): void {
         case "usernameExists":
             users.usernameExists(args[0]);
             break;
-        case "getUserById":
-            users.byId(args[0]);
+        case "users.find":
+            users.find(args[0]);
             break;
         case "getUserByUsername":
             users.byUsername(args[0]);

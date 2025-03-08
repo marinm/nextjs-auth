@@ -26,7 +26,7 @@ export function createTable(): void {
     );
 }
 
-export function get(id: string): undefined | Session {
+export function find(id: string): undefined | Session {
     return db.get("SELECT * FROM sessions WHERE id = ?;", [id]);
 }
 
@@ -37,7 +37,7 @@ export function create(userId: string): undefined | Session {
         "INSERT INTO sessions (id, user_id, created_at, updated_at) VALUES (?, ?, ?, ?, ?);",
         [id, userId, timestamp, timestamp]
     );
-    return get(id);
+    return find(id);
 }
 
 export function all(): Session[] {
@@ -53,13 +53,13 @@ export function refresh(sessionId: string): void {
 }
 
 export function authenticate(sessionId: string): undefined | users.User {
-    const session = get(sessionId);
+    const session = find(sessionId);
 
     if (session === undefined) {
         return undefined;
     }
 
-    const user = users.byId(session.user_id);
+    const user = users.find(session.user_id);
 
     // refresh(session.id);
 
