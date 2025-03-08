@@ -52,3 +52,18 @@ export function uuidv4(): string {
     return result;
 }
 
+export function now(): string {
+    const datetime = new Date();
+
+    const y = datetime.getUTCFullYear();
+    const m = String(datetime.getUTCMonth()).padStart(2, "0");
+    const d = String(datetime.getUTCDate()).padStart(2, "0");
+    const h = String(datetime.getUTCHours()).padStart(2, "0");
+    const i = String(datetime.getUTCMinutes()).padStart(2, "0");
+    const s = String(datetime.getUTCSeconds()).padStart(2, "0");
+
+    const result = `${y}-${m}-${d} ${h}:${i}:${s}`;
+
+    console.log("now: " + result);
+    return result;
+}

@@ -22,6 +22,9 @@ function main(): void {
         case "uuid:v4":
             commands.uuidv4();
             break;
+        case "now":
+            commands.now();
+            break;
         default:
             console.error("Command does not exist");
     }
