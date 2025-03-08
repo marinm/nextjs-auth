@@ -1,8 +1,8 @@
 import dotenv from "dotenv";
-import * as commands from "./commands";
 import * as database from "@/database/database";
 import * as users from "@/database/users";
 import * as sessions from "@/database/sessions";
+import * as auth from "@/auth/auth";
 
 dotenv.config();
 
@@ -44,7 +44,7 @@ function main(): void {
             users.byUsername(args[0]);
             break;
         case "signIn":
-            commands.signIn(args[0], args[1]);
+            auth.signIn(args[0], args[1]);
             break;
         case "createSessionsTable":
             sessions.createTable();
@@ -65,7 +65,7 @@ function main(): void {
             sessions.del(args[0]);
             break;
         case "signOut":
-            commands.signOut(args[0]);
+            auth.signOut(args[0]);
             break;
         default:
             console.error("Command does not exist");
