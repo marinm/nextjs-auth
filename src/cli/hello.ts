@@ -31,6 +31,9 @@ function main(): void {
         case "createUser":
             commands.createUser(args[0], args[1]);
             break;
+        case "users":
+            commands.users();
+            break;
         case "usernameExists":
             commands.usernameExists(args[0]);
             break;

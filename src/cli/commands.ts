@@ -121,6 +121,36 @@ export function usernameExists(username: string): boolean {
     return exists;
 }
 
+export type User = {
+    id: string;
+    username: string;
+    password: string;
+    created_at: string;
+    updated_at: string;
+};
+
+export function users(): User[] {
+    console.time("db:connect");
+    const db = new Database(process.env.DATABASE_URL);
+    db.pragma("journal_mode = WAL");
+    console.timeEnd("db:connect");
+
+    const statement = `SELECT * FROM users`;
+
+    console.time("db:prepare");
+    const prepared = db.prepare(statement);
+    console.timeEnd("db:prepare");
+
+    console.time("db:run");
+    const users = prepared.all() as User[];
+    console.timeEnd("db:run");
+
+    db.close();
+
+    console.log(users);
+    return users;
+}
+
 export function createUser(username: string, password: string): string {
     if (username.length < 2) {
         throw new Error("Username must be at least 2 characters long");
