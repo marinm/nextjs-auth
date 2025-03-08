@@ -1,7 +1,9 @@
+import { login } from "@/app/actions";
+
 export default function Page() {
     return (
         <div className="min-vh-100 d-flex flex-column justify-content-center">
-            <form className="d-grid gap-2">
+            <form action={login} className="d-grid gap-3">
                 <div className="form-floating">
                     <input
                         type="text"
@@ -23,7 +25,7 @@ export default function Page() {
                     <label>Password</label>
                 </div>
 
-                <button type="submit" className="btn btn-primary btn-lg">
+                <button type="submit" className="btn btn-primary btn-lg mt-4">
                     Log in
                 </button>
             </form>
