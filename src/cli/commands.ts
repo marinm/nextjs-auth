@@ -204,7 +204,7 @@ export function signIn(username: string, password: string): boolean {
 export function createSessionsTable(): void {
     run(
         `CREATE TABLE IF NOT EXISTS sessions (
-            id TEXT NOT NULL,
+            id TEXT NOT NULL PRIMARY KEY,
             session_key TEXT NOT NULL,
             user_id TEXT,
             created_at TEXT NOT NULL,
