@@ -2,7 +2,7 @@ import * as users from "@/database/users";
 import * as sessions from "@/database/sessions";
 import { passwordsMatch } from "@/utils";
 
-export function signIn(username: string, password: string): boolean {
+export function login(username: string, password: string): boolean {
     const user = users.byUsername(username);
 
     if (!user) {
@@ -21,6 +21,6 @@ export function signIn(username: string, password: string): boolean {
     return authenticated;
 }
 
-export function signOut(sessionId: string): void {
+export function logout(sessionId: string): void {
     sessions.del(sessionId);
 }
