@@ -67,3 +67,30 @@ export function now(): string {
     console.log("now: " + result);
     return result;
 }
+
+export function createUsersTable(): void {
+    console.time("db:connect");
+    const db = new Database(process.env.DATABASE_URL);
+    db.pragma("journal_mode = WAL");
+    console.timeEnd("db:connect");
+
+    const statement = `
+            CREATE TABLE IF NOT EXISTS users (
+                id TEXT NOT NULL,
+                username TEXT NOT NULL,
+                password TEXT NOT NULL,
+                created_at TEXT NOT NULL,
+                updated_at TEXT NOT NULL
+            );
+        `;
+
+    console.time("db:prepare");
+    const prepared = db.prepare(statement);
+    console.timeEnd("db:prepare");
+
+    console.time("db:run");
+    prepared.run();
+    console.timeEnd("db:run");
+
+    db.close();
+}

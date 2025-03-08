@@ -19,6 +19,9 @@ function main(): void {
         case "hashedPassword":
             commands.hashedPassword(args[0]);
             break;
+        case "createUsersTable":
+            commands.createUsersTable();
+            break;
         case "uuid:v4":
             commands.uuidv4();
             break;
