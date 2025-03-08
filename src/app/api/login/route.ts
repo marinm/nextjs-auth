@@ -9,8 +9,6 @@ function toString(value: null | FormDataEntryValue): null | string {
 }
 
 export async function POST(request: Request) {
-    console.log("here");
-
     const formData = await request.formData();
 
     const username = toString(formData.get("username"));

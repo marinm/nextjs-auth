@@ -2,19 +2,12 @@ import crypto from "node:crypto";
 import * as uuid from "uuid";
 
 export function randomHex(n: number): string {
-    console.time("randomHex");
-    const result: string = crypto.randomBytes(n).toString("hex");
-    console.timeEnd("randomHex");
-    console.log(result);
-    return result;
+    return crypto.randomBytes(n).toString("hex");
 }
 
 export function hashedPassword(password: string): string {
     const salt = randomHex(16);
-    console.time("crypto.scryptSync");
     const hash = crypto.scryptSync(password, salt, 64).toString("hex");
-    console.timeEnd("crypto.scryptSync");
-    console.log(password, salt, hash);
     return `${salt}-${hash}`;
 }
 
@@ -32,11 +25,7 @@ export function passwordsMatch(
 }
 
 export function uuidv4(): string {
-    console.time("uuid:v4");
-    const result = uuid.v4();
-    console.timeEnd("uuid:v4");
-    console.log("uuid:v4: " + result);
-    return result;
+    return uuid.v4();
 }
 
 export function now(): string {
@@ -49,8 +38,5 @@ export function now(): string {
     const i = String(datetime.getUTCMinutes()).padStart(2, "0");
     const s = String(datetime.getUTCSeconds()).padStart(2, "0");
 
-    const result = `${y}-${m}-${d} ${h}:${i}:${s}`;
-
-    console.log("now: " + result);
-    return result;
+    return `${y}-${m}-${d} ${h}:${i}:${s}`;
 }
