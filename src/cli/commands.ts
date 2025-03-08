@@ -1,4 +1,5 @@
 import Database from "better-sqlite3";
+import crypto from "node:crypto";
 
 export function tables(): void {
     console.time("db:connect");
@@ -14,4 +15,11 @@ export function tables(): void {
     console.log(result);
 
     db.close();
+}
+
+export function randomHex(n: number): void {
+    console.time("randomHex");
+    const result = crypto.randomBytes(n).toString("hex");
+    console.timeEnd("randomHex");
+    console.log(result);
 }

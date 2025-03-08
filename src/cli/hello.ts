@@ -10,6 +10,9 @@ function main(): void {
         case "tables":
             commands.tables();
             break;
+        case "randomHex":
+            commands.randomHex(16);
+            break;
         default:
             console.log("Command does not exist");
     }
