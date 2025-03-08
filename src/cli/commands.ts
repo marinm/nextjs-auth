@@ -17,9 +17,19 @@ export function tables(): void {
     db.close();
 }
 
-export function randomHex(n: number): void {
+export function randomHex(n: number): string {
     console.time("randomHex");
-    const result = crypto.randomBytes(n).toString("hex");
+    const result: string = crypto.randomBytes(n).toString("hex");
     console.timeEnd("randomHex");
     console.log(result);
+    return result;
+}
+
+export function hashedPassword(password: string): string {
+    const salt = randomHex(16);
+    console.time("crypto.scryptSync");
+    const hash = crypto.scryptSync(password, salt, 64).toString("hex");
+    console.timeEnd("crypto.scryptSync");
+    console.log(password, salt, hash);
+    return hash;
 }

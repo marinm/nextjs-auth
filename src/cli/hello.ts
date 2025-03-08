@@ -13,6 +13,9 @@ function main(): void {
         case "randomHex":
             commands.randomHex(parseInt(args[0]));
             break;
+        case "hashedPassword":
+            commands.hashedPassword(args[0]);
+            break;
         default:
             console.error("Command does not exist");
     }
