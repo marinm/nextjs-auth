@@ -1,6 +1,7 @@
 import dotenv from "dotenv";
 import * as commands from "./commands";
 import * as database from "@/database/database";
+import * as users from "@/database/users";
 
 dotenv.config();
 
@@ -24,22 +25,22 @@ function main(): void {
             database.drop(args[0]);
             break;
         case "createUsersTable":
-            commands.createUsersTable();
+            users.createTable();
             break;
         case "createUser":
-            commands.createUser(args[0], args[1]);
+            users.create(args[0], args[1]);
             break;
         case "users":
-            commands.users();
+            users.all();
             break;
         case "usernameExists":
-            commands.usernameExists(args[0]);
+            users.usernameExists(args[0]);
             break;
         case "getUserById":
-            commands.getUserById(args[0]);
+            users.byId(args[0]);
             break;
         case "getUserByUsername":
-            commands.getUserByUsername(args[0]);
+            users.byUsername(args[0]);
             break;
         case "signIn":
             commands.signIn(args[0], args[1]);

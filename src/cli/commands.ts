@@ -1,77 +1,10 @@
 import { run, get, all } from "@/database/database";
-import { User, Session } from "@/database/types";
-import {
-    hashedPassword,
-    passwordsMatch,
-    now,
-    uuidv4,
-    newSessionKey,
-} from "@/utils";
-
-export function createUsersTable(): void {
-    run(
-        `CREATE TABLE IF NOT EXISTS users (
-            id TEXT NOT NULL PRIMARY KEY,
-            username TEXT NOT NULL,
-            password TEXT NOT NULL,
-            created_at TEXT NOT NULL,
-            updated_at TEXT NOT NULL
-        );`,
-        []
-    );
-}
-
-export function usernameExists(username: string): boolean {
-    return (
-        get(`SELECT 1 FROM users WHERE username = ?`, username) !== undefined
-    );
-}
-
-export function users(): User[] {
-    return all<User>(`SELECT id,username,created_at,updated_at FROM users`);
-}
-
-export function createUser(username: string, password: string): void {
-    if (username.length < 2) {
-        throw new Error("Username must be at least 2 characters long");
-    }
-
-    if (username.length > 32) {
-        throw new Error("Username must be at most 32 characters long");
-    }
-
-    if (password.length < 8) {
-        throw new Error("Password must be at least 8 characters long");
-    }
-
-    if (password.length > 32) {
-        throw new Error("Password must be at most 32 characters long");
-    }
-
-    if (usernameExists(username)) {
-        throw new Error(`Username ${username} already exists`);
-    }
-
-    const timestamp = now();
-    run(`INSERT INTO users VALUES (?, ?, ?, ?, ?);`, [
-        uuidv4(),
-        username,
-        hashedPassword(password),
-        timestamp,
-        timestamp,
-    ]);
-}
-
-export function getUserByUsername(username: string): undefined | User {
-    return get<User>(`SELECT * FROM users WHERE username = ?;`, username);
-}
-
-export function getUserById(id: string): undefined | User {
-    return get<User>(`SELECT * FROM users WHERE id = ?;`, id);
-}
+import { Session } from "@/database/types";
+import * as users from "@/database/users";
+import { passwordsMatch, now, uuidv4, newSessionKey } from "@/utils";
 
 export function signIn(username: string, password: string): boolean {
-    const user = getUserByUsername(username);
+    const user = users.byUsername(username);
 
     if (!user) {
         throw new Error("That username does not exist");
@@ -128,7 +61,9 @@ export function refreshSession(sessionId: string): void {
     );
 }
 
-export function authenticateSession(sessionKey: string): undefined | User {
+export function authenticateSession(
+    sessionKey: string
+): undefined | users.User {
     const session: Session | undefined = get<Session>(
         "SELECT * FROM sessions WHERE session_key = ?",
         [sessionKey]
@@ -138,7 +73,7 @@ export function authenticateSession(sessionKey: string): undefined | User {
         refreshSession(session.id);
     }
 
-    return session?.user_id ? getUserById(session.user_id) : undefined;
+    return session?.user_id ? users.byId(session.user_id) : undefined;
 }
 
 export function deleteSession(id: string): void {
