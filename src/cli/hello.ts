@@ -64,6 +64,9 @@ function main(): void {
         case "sessions":
             commands.sessions();
             break;
+        case "authenticateSession":
+            commands.authenticateSession(args[0]);
+            break;
         default:
             console.error("Command does not exist");
     }

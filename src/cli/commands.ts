@@ -242,3 +242,12 @@ export type Session = {
 export function sessions(): Session[] {
     return all<Session>(`SELECT * FROM sessions`);
 }
+
+export function authenticateSession(sessionKey: string): boolean {
+    const session: Session | undefined = get<Session>(
+        "SELECT * FROM sessions WHERE session_key = ?",
+        [sessionKey]
+    );
+
+    return session !== undefined;
+}
