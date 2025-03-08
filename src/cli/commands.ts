@@ -41,7 +41,7 @@ export function hashedPassword(password: string): string {
     const hash = crypto.scryptSync(password, salt, 64).toString("hex");
     console.timeEnd("crypto.scryptSync");
     console.log(password, salt, hash);
-    return hash;
+    return `${salt}-${hash}`;
 }
 
 export function uuidv4(): string {
@@ -119,4 +119,56 @@ export function usernameExists(username: string): boolean {
 
     console.log("exists: " + (exists ? "yes" : "no"));
     return exists;
+}
+
+export function createUser(username: string, password: string): string {
+    if (username.length < 2) {
+        throw new Error("Username must be at least 2 characters long");
+    }
+
+    if (username.length > 32) {
+        throw new Error("Username must be at most 32 characters long");
+    }
+
+    if (password.length < 8) {
+        throw new Error("Password must be at least 8 characters long");
+    }
+
+    if (password.length > 32) {
+        throw new Error("Password must be at most 32 characters long");
+    }
+
+    if (usernameExists(username)) {
+        throw new Error(`Username ${username} already exists`);
+    }
+
+    console.time("db:connect");
+    const db = new Database(process.env.DATABASE_URL);
+    db.pragma("journal_mode = WAL");
+    console.timeEnd("db:connect");
+
+    const statement = `
+            INSERT INTO users VALUES (?, ?, ?, ?, ?);
+        `;
+
+    console.time("db:prepare");
+    const prepared = db.prepare(statement);
+    console.timeEnd("db:prepare");
+
+    console.time("db:run");
+    const timestamp = now();
+    const result = prepared.run(
+        uuidv4(),
+        username,
+        hashedPassword(password),
+        timestamp,
+        timestamp
+    );
+    console.timeEnd("db:run");
+
+    console.log(result);
+
+    db.close();
+
+    return "done";
 }
