@@ -216,3 +216,25 @@ export function createSessionsTable(): void {
         []
     );
 }
+
+export function createSession(userId: string): void {
+    const sessionKey = randomHex(128);
+    const timestamp = now();
+    run(
+        "INSERT INTO sessions (id, session_key, user_id, created_at, updated_at) VALUES (?, ?, ?, ?, ?);",
+        [uuidv4(), sessionKey, userId, timestamp, timestamp]
+    );
+    console.log(`new session user_id:${userId} session_key:${sessionKey}`);
+}
+
+export type Session = {
+    id: string;
+    session_key: string;
+    user_id: string;
+    created_at: string;
+    updated_at: string;
+};
+
+export function sessions(): Session[] {
+    return all<Session>(`SELECT * FROM sessions`);
+}

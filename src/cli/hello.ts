@@ -55,6 +55,12 @@ function main(): void {
         case "createSessionsTable":
             commands.createSessionsTable();
             break;
+        case "createSession":
+            commands.createSession(args[0]);
+            break;
+        case "sessions":
+            commands.sessions();
+            break;
         default:
             console.error("Command does not exist");
     }
