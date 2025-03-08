@@ -202,3 +202,13 @@ export function createUser(username: string, password: string): string {
 
     return "done";
 }
+
+export function getUserByUsername(username: string): undefined | User {
+    const db = new Database(process.env.DATABASE_URL);
+    db.pragma("journal_mode = WAL");
+    const statement = `SELECT * FROM users WHERE username = ?;`;
+    const result = db.prepare(statement).get(username) as undefined | User;
+    db.close();
+    console.log(result);
+    return result;
+}

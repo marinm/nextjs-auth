@@ -37,6 +37,9 @@ function main(): void {
         case "usernameExists":
             commands.usernameExists(args[0]);
             break;
+        case "getUserByUsername":
+            commands.getUserByUsername(args[0]);
+            break;
         default:
             console.error("Command does not exist");
     }
