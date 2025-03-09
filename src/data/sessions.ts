@@ -34,7 +34,7 @@ export function create(userId: string): undefined | Session {
     const id = newSessionId();
     const timestamp = now();
     db.run(
-        "INSERT INTO sessions (id, user_id, created_at, updated_at) VALUES (?, ?, ?, ?, ?);",
+        "INSERT INTO sessions (id, user_id, created_at, updated_at) VALUES (?, ?, ?, ?);",
         [id, userId, timestamp, timestamp]
     );
     return find(id);
