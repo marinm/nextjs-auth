@@ -1,11 +1,10 @@
 "use client";
 
 import Link from "next/link";
-import { useContext } from "react";
-import { UserContext } from "./user-provider";
+import { useUser } from "./user-provider";
 
 export default function Page() {
-    const user = useContext(UserContext);
+    const { user } = useUser();
 
     const loginButton = <Link href="/login">Login</Link>;
 
@@ -15,7 +14,7 @@ export default function Page() {
             <Link href="/me" className="btn btn-primary">
                 Me
             </Link>
-            {user ? "already logged in" : loginButton}
+            {user ? `logged in as ${user.username}` : loginButton}
         </div>
     );
 }

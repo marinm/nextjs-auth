@@ -1,21 +1,21 @@
 "use client";
 
-import { useContext } from "react";
-import { UserContext } from "../user-provider";
-
-async function onSubmit(formData: FormData) {
-    return fetch("/api/login", {
-        method: "POST",
-        body: formData,
-    }).then((response) => response.json());
-}
+import { useUser } from "../user-provider";
 
 export default function Page() {
-    const user = useContext(UserContext);
+    const { user, setUser } = useUser();
 
     if (user !== null) {
-        console.log(user);
-        return "you are already logged in";
+        console.log(JSON.stringify(user));
+        return "login: you are already logged in as " + user.username;
+    }
+
+    async function onSubmit(formData: FormData) {
+        const result = await fetch("/api/login", {
+            method: "POST",
+            body: formData,
+        }).then((response) => response.json());
+        setUser(result);
     }
 
     return (
