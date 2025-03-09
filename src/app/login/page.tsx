@@ -1,7 +1,26 @@
+"use client";
+
+import { useContext } from "react";
+import { UserContext } from "../user-provider";
+
+async function onSubmit(formData: FormData) {
+    return fetch("/api/login", {
+        method: "POST",
+        body: formData,
+    }).then((response) => response.json());
+}
+
 export default function Page() {
+    const user = useContext(UserContext);
+
+    if (user !== null) {
+        console.log(user);
+        return "you are already logged in";
+    }
+
     return (
         <div className="min-vh-100 d-flex flex-column justify-content-center">
-            <form method="POST" action="/api/login" className="d-grid gap-3">
+            <form action={onSubmit} className="d-grid gap-3">
                 <div className="form-floating">
                     <input
                         type="text"
