@@ -8,68 +8,35 @@ dotenv.config();
 
 function main(): void {
     const [, , command, ...args] = process.argv;
+    console.table(run(command, args));
+}
 
-    switch (command) {
-        case "run":
-            database.run(args[0]);
-            break;
-        case "all":
-            database.all(args[0]);
-            break;
-        case "tables":
-            database.tables();
-            break;
-        case "tableInfo":
-            database.tableInfo(args[0]);
-            break;
-        case "drop":
-            database.drop(args[0]);
-            break;
-        case "createUsersTable":
-            users.createTable();
-            break;
-        case "createUser":
-            users.create(args[0], args[1]);
-            break;
-        case "users":
-            users.all();
-            break;
-        case "usernameExists":
-            users.usernameExists(args[0]);
-            break;
-        case "users.find":
-            users.find(args[0]);
-            break;
-        case "getUserByUsername":
-            users.byUsername(args[0]);
-            break;
-        case "login":
-            auth.login(args[0], args[1]);
-            break;
-        case "logout":
-            auth.logout(args[0]);
-            break;
-        case "createSessionsTable":
-            sessions.createTable();
-            break;
-        case "createSession":
-            sessions.create(args[0]);
-            break;
-        case "sessions":
-            sessions.all();
-            break;
-        case "sessions.sessionUser":
-            sessions.sessionUser(args[0]);
-            break;
-        case "refreshSession":
-            sessions.refresh(args[0]);
-            break;
-        case "deleteSession":
-            sessions.del(args[0]);
-            break;
-        default:
-            console.error("Command does not exist");
-    }
+function run(command: string, args: string[]) {
+    const commandHandlers: Record<string, () => unknown> = {
+        run: () => database.run(args[0]),
+        all: () => database.all(args[0]),
+        tables: () => database.tables(),
+        tableInfo: () => database.tableInfo(args[0]),
+        drop: () => database.drop(args[0]),
+        createUsersTable: () => users.createTable(),
+        createUser: () => users.create(args[0], args[1]),
+        users: () => users.all(),
+        usernameExists: () => users.usernameExists(args[0]),
+        "users.find": () => users.find(args[0]),
+        getUserByUsername: () => users.byUsername(args[0]),
+        login: () => auth.login(args[0], args[1]),
+        logout: () => auth.logout(args[0]),
+        createSessionsTable: () => sessions.createTable(),
+        createSession: () => sessions.create(args[0]),
+        sessions: () => sessions.all(),
+        "sessions.sessionUser": () => sessions.sessionUser(args[0]),
+        refreshSession: () => sessions.refresh(args[0]),
+        deleteSession: () => sessions.del(args[0]),
+    };
+
+    const handler = commandHandlers[command];
+
+    return handler ? handler() : "Command does not exist";
 }
 
 main();
