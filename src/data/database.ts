@@ -39,12 +39,12 @@ export function all<T>(statement: string, params: unknown = []): T[] {
     return result;
 }
 
-export function tables(): void {
-    all("SELECT name FROM sqlite_master");
+export function tables(): unknown[] {
+    return all("SELECT name FROM sqlite_master");
 }
 
-export function tableInfo(table: string): void {
-    all(`PRAGMA table_info(${table})`);
+export function tableInfo(table: string): unknown[] {
+    return all(`PRAGMA table_info(${table})`);
 }
 
 export function drop(table: string): void {
