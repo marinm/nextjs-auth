@@ -7,13 +7,15 @@ import { UserContext } from "./user-provider";
 export default function Page() {
     const user = useContext(UserContext);
 
+    const loginButton = <Link href="/login">Login</Link>;
+
     return (
         <div>
             <h1>Home</h1>
             <Link href="/me" className="btn btn-primary">
                 Me
             </Link>
-            {user ? "logged in" : "not logged in"}
+            {user ? "already logged in" : loginButton}
         </div>
     );
 }
