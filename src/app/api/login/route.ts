@@ -3,6 +3,8 @@
 import { redirect } from "next/navigation";
 import { cookies } from "next/headers";
 import * as auth from "@/auth/auth";
+import * as sessions from "@/data/sessions";
+import { NextResponse } from "next/server";
 
 function toString(value: null | FormDataEntryValue): null | string {
     return typeof value === "string" ? value : null;
@@ -35,5 +37,5 @@ export async function POST(request: Request) {
         maxAge: 60 * 60 * 24 * 7,
     });
 
-    redirect("/me");
+    return NextResponse.json(sessions.sessionUser(session.id));
 }
