@@ -17,9 +17,9 @@ export default function RootLayout({
     return (
         <html lang="en">
             <body data-bs-theme="dark">
-                <UserProvider>
-                    <div className="container">{children}</div>
-                </UserProvider>
+                <div className="container">
+                    <UserProvider>{children}</UserProvider>
+                </div>
             </body>
         </html>
     );
