@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useUser } from "./user-provider";
+import { useUser } from "./UserProvider";
 
 export default function Page() {
     const { user } = useUser();

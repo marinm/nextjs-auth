@@ -1,6 +1,6 @@
 "use client";
 
-import { useUser } from "../user-provider";
+import { useUser } from "../UserProvider";
 
 export default function Page() {
     const { user, setUser } = useUser();

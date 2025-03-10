@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import UserProvider from "@/app/user-provider";
+import UserProvider from "@/app/UserProvider";
 
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./globals.css";
