@@ -3,6 +3,7 @@
 import * as users from "@/data/users";
 import * as sessions from "@/data/sessions";
 import { passwordsMatch } from "@/utils";
+import { cookies } from "next/headers";
 
 export async function login(
     username: string,
@@ -26,4 +27,5 @@ export async function login(
 
 export async function logout(sessionId: string) {
     sessions.del(sessionId);
+    (await cookies()).delete("session_id");
 }
