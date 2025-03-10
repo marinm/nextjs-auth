@@ -3,17 +3,21 @@ import UserProvider from "@/app/user-provider";
 
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./globals.css";
+import { sessionUser } from "./session-user";
 
 export const metadata: Metadata = {
     title: "Auth",
     description: "marinm/auth",
 };
 
-export default function RootLayout({
+export default async function RootLayout({
     children,
 }: Readonly<{
     children: React.ReactNode;
 }>) {
+    const user = await sessionUser();
+    console.log(user);
+
     return (
         <html lang="en">
             <body data-bs-theme="dark">
