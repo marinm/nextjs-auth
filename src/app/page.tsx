@@ -1,10 +1,10 @@
-"use client";
+"use server";
 
 import Link from "next/link";
-import { useUser } from "./UserContext";
+import { sessionUser } from "./session-user";
 
-export default function Page() {
-    const { user } = useUser();
+export default async function Page() {
+    const user = await sessionUser();
 
     const loginButton = <Link href="/login">Login</Link>;
 
