@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import UserProvider from "@/app/UserContext";
+import UserContext from "@/app/UserContext";
 
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./globals.css";
@@ -22,7 +22,9 @@ export default async function RootLayout({
         <html lang="en">
             <body data-bs-theme="dark">
                 <div className="container">
-                    <UserProvider>{children}</UserProvider>
+                    <UserContext.Provider value={user}>
+                        {children}
+                    </UserContext.Provider>
                 </div>
             </body>
         </html>
