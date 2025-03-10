@@ -1,7 +1,7 @@
 "use server";
 
 import Link from "next/link";
-import { sessionUser } from "./session-user";
+import { sessionUser } from "@/auth/auth";
 
 export default async function Page() {
     const user = await sessionUser();

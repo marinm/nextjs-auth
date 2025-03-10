@@ -1,7 +1,7 @@
 "use server";
 
 import UserContext from "@/app/UserContext";
-import { sessionUser } from "../session-user";
+import { sessionUser } from "@/auth/auth";
 import { redirect } from "next/navigation";
 
 export default async function Layout({
@@ -12,7 +12,7 @@ export default async function Layout({
     const user = await sessionUser();
 
     if (!user) {
-        redirect("/login;");
+        redirect("/login");
     }
 
     return <UserContext.Provider value={user}>{children}</UserContext.Provider>;
