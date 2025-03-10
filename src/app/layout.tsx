@@ -21,11 +21,9 @@ export default async function RootLayout({
     return (
         <html lang="en">
             <body data-bs-theme="dark">
-                <div className="container">
-                    <UserContext.Provider value={user}>
-                        {children}
-                    </UserContext.Provider>
-                </div>
+                <UserContext.Provider value={user}>
+                    {children}
+                </UserContext.Provider>
             </body>
         </html>
     );

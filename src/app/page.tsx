@@ -9,7 +9,7 @@ export default function Page() {
     const loginButton = <Link href="/login">Login</Link>;
 
     return (
-        <div>
+        <div className="container">
             <h1>Home</h1>
             <Link href="/me" className="btn btn-primary">
                 Me
