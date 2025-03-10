@@ -1,7 +1,12 @@
-import { useUser } from "../UserContext";
+import { redirect } from "next/navigation";
+import { sessionUser } from "@/auth/auth";
 
-export default function Page() {
-    const user = useUser();
+export default async function Page() {
+    const user = await sessionUser();
+
+    if (!user) {
+        redirect("/login");
+    }
 
     return (
         <div>
