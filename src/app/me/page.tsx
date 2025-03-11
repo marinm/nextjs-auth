@@ -1,8 +1,8 @@
 import { redirect } from "next/navigation";
-import { sessionUser } from "@/auth/auth";
+import * as auth from "@/auth/auth";
 
 export default async function Page() {
-    const user = await sessionUser();
+    const user = await auth.sessionUser();
 
     if (!user) {
         redirect("/login");
@@ -11,6 +11,9 @@ export default async function Page() {
     return (
         <div>
             <h1>Me: {user.username}</h1>
+            <button onClick={auth.logout} className="btn btn-outline-primary">
+                Logout
+            </button>
         </div>
     );
 }
