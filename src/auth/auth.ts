@@ -15,6 +15,20 @@ export async function sessionUser(): Promise<null | users.User> {
     return sessionId === null ? null : sessions.sessionUser(sessionId) ?? null;
 }
 
+export async function register(
+    username: string,
+    password: string
+): Promise<null | users.User> {
+    if (users.usernameExists(username)) {
+        console.log("username exists");
+        return null;
+    }
+
+    users.create(username, password);
+
+    return users.byUsername(username) ?? null;
+}
+
 export async function login(
     username: string,
     password: string

@@ -1,8 +1,7 @@
 import Form from "next/form";
 import { sessionUser } from "@/auth/auth";
-import { login } from "@/app/actions";
+import { register } from "@/app/actions";
 import { redirect } from "next/navigation";
-import Link from "next/link";
 
 export default async function Page() {
     const user = await sessionUser();
@@ -13,9 +12,10 @@ export default async function Page() {
 
     return (
         <div className="min-vh-100 d-flex flex-column align-items-center justify-content-center">
+            <p className="mb-3">Welcome, traveler...</p>
             <Form
-                action={login}
-                className="d-grid gap-3 w-100 mb-5"
+                action={register}
+                className="d-grid gap-3 w-100"
                 style={{ maxWidth: "30em" }}
             >
                 <div className="form-floating">
@@ -31,7 +31,7 @@ export default async function Page() {
                 <div className="form-floating">
                     <input
                         type="password"
-                        autoComplete="password"
+                        autoComplete="new-password"
                         name="password"
                         placeholder="Password"
                         className="form-control"
@@ -40,10 +40,9 @@ export default async function Page() {
                 </div>
 
                 <button type="submit" className="btn btn-primary mt-4">
-                    Log in
+                    Register
                 </button>
             </Form>
-            <Link href="/register">Register</Link>
         </div>
     );
 }
