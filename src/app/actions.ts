@@ -4,7 +4,7 @@ import * as auth from "@/auth/auth";
 import { redirect } from "next/navigation";
 import { cookies } from "next/headers";
 
-function toString(value: null | FormDataEntryValue): null | string {
+function toNullableString(value: null | FormDataEntryValue): null | string {
     return typeof value === "string" ? value : null;
 }
 
@@ -17,8 +17,8 @@ export async function register(formData: FormData) {
         redirect("/");
     }
 
-    const username = toString(formData.get("username"));
-    const password = toString(formData.get("password"));
+    const username = toNullableString(formData.get("username"));
+    const password = toNullableString(formData.get("password"));
 
     if (username === null || password === null) {
         redirect("/register");
@@ -36,8 +36,8 @@ export async function register(formData: FormData) {
 }
 
 export async function login(formData: FormData) {
-    const username = toString(formData.get("username"));
-    const password = toString(formData.get("password"));
+    const username = toNullableString(formData.get("username"));
+    const password = toNullableString(formData.get("password"));
 
     if (username === null || password === null) {
         redirect("/");
