@@ -15,7 +15,7 @@ export default async function RootLayout({
 }>) {
     return (
         <html lang="en">
-            <body data-bs-theme="dark" className="h-100 p-3">
+            <body data-bs-theme="dark" className="vh-100 p-3">
                 {children}
             </body>
         </html>

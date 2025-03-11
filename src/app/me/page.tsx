@@ -1,5 +1,7 @@
 import { redirect } from "next/navigation";
 import * as auth from "@/auth/auth";
+import Image from "next/image";
+import boi from "./doge.jpg";
 
 export default async function Page() {
     const user = await auth.sessionUser();
@@ -19,7 +21,13 @@ export default async function Page() {
                     Logout
                 </button>
             </div>
-            <div className="card flex-grow-1">Tap to increment</div>
+            <div className="flex-grow-1 overflow-hidden d-flex align-items-center">
+                <Image
+                    src={boi}
+                    alt="A treat for you"
+                    className="object-fit-cover w-100 rounded"
+                />
+            </div>
         </div>
     );
 }
