@@ -11,8 +11,12 @@ export default async function Page() {
     }
 
     return (
-        <div className="min-vh-100 d-flex flex-column justify-content-center">
-            <Form action={login} className="d-grid gap-3">
+        <div className="min-vh-100 d-flex flex-column align-items-center justify-content-center">
+            <Form
+                action={login}
+                className="d-grid gap-3 w-100"
+                style={{ maxWidth: "30em" }}
+            >
                 <div className="form-floating">
                     <input
                         type="text"
