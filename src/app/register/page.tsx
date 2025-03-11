@@ -2,6 +2,7 @@ import Form from "next/form";
 import { sessionUser } from "@/auth/auth";
 import { register } from "@/app/actions";
 import { redirect } from "next/navigation";
+import Link from "next/link";
 
 export default async function Page() {
     const user = await sessionUser();
@@ -15,7 +16,7 @@ export default async function Page() {
             <p className="mb-3">Welcome, traveler...</p>
             <Form
                 action={register}
-                className="d-grid gap-3 w-100"
+                className="d-grid gap-3 w-100 mb-5"
                 style={{ maxWidth: "30em" }}
             >
                 <div className="form-floating">
@@ -43,6 +44,7 @@ export default async function Page() {
                     Register
                 </button>
             </Form>
+            <Link href="/">Log in</Link>
         </div>
     );
 }

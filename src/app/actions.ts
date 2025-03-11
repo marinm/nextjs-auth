@@ -9,7 +9,6 @@ function toNullableString(value: null | FormDataEntryValue): null | string {
 }
 
 export async function register(formData: FormData) {
-    console.log("register");
     const session = await auth.userSession();
 
     if (session !== null) {
@@ -24,8 +23,7 @@ export async function register(formData: FormData) {
         redirect("/register");
     }
 
-    console.log("registering...");
-    const user = auth.register(username, password);
+    const user = await auth.register(username, password);
 
     if (user === null) {
         console.log("no user created");
