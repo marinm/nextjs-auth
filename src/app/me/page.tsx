@@ -5,7 +5,7 @@ export default async function Page() {
     const user = await auth.sessionUser();
 
     if (!user) {
-        redirect("/login");
+        redirect("/");
     }
 
     return (

@@ -15,13 +15,13 @@ export async function login(formData: FormData) {
     const password = toString(formData.get("password"));
 
     if (username === null || password === null) {
-        redirect("/login");
+        redirect("/");
     }
 
     const session = await auth.login(username, password);
 
     if (session === null) {
-        redirect("/login");
+        redirect("/");
     }
 
     const cookieStore = await cookies();
